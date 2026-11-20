@@ -62,7 +62,12 @@ header {
 }
 
 header nav {
-    width: 87%;
+    flex: 1;
+    margin: 0 20px;
+}
+
+#logout-container {
+    flex-shrink: 0;
 }
 
 header a {

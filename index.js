@@ -1,10 +1,8 @@
-//////////////////
-// Importaciones
 import express from "express";
 import environments from "./src/api/config/environments.js";
 import cors from "cors";
 import { loggerUrl } from "./src/api/middlewares/middleware.js";
-import { authRoutes, productRoutes, viewRoutes } from "./src/api/routes/index.js"
+import { authRoutes, productRoutes, viewRoutes, usersRoutes } from "./src/api/routes/index.js"
 import { __dirname, join } from "./src/api/utils/index.js";
 import session from "express-session";
 
@@ -39,16 +37,13 @@ app.use(session({
     saveUninitialized: true
 }));
 
-
-
-
-
-
 app.get("/", (req, res) => {
     res.send("Hola mundo");
 });
 
 app.use("/api/products", productRoutes);
+app.use("/api/users", usersRoutes);
+
 
 app.use("/dashboard", viewRoutes);
 

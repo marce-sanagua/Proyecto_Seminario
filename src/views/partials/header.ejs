@@ -1,32 +1,23 @@
 <body>
     <header>
         <div id="logo-container">
-            <img src="https://img.magnific.com/premium-vector/simple-burger-logo-design_375081-575.jpg?w=740" alt="logo"
-                class="logo">
+            <img src="https://img.magnific.com/premium-vector/simple-burger-logo-design_375081-575.jpg?w=740"
+                alt="logo" class="logo">
         </div>
+
         <nav>
             <ul>
-                <li>
-                    <a href="/dashboard/principal">Principal</a>
-                </li>
-                <li>
-                    <a href="/dashboard/consultar">Consultar</a>
-                </li>
-                <li>
-                    <a href="/dashboard/crear">Crear</a>
-                </li>
-                <li>
-                    <a href="/dashboard/modificar">Modificar</a>
-                </li>
-                <li>
-                    <a href="/dashboard/eliminar">Eliminar</a>
-                </li>
-
-                <li>
-                    <form action="/logout" method="POST" id="form-logout">
-                        <input type="submit" value="Cerrar sesion">
-                    </form>
-                </li>
+                <li><a href="/dashboard/principal">Principal</a></li>
+                <li><a href="/dashboard/consultar">Consultar</a></li>
+                <li><a href="/dashboard/crear">Crear</a></li>
+                <li><a href="/dashboard/modificar">Modificar</a></li>
+                <li><a href="/dashboard/eliminar">Eliminar</a></li>
             </ul>
         </nav>
+
+        <div id="logout-container">
+            <form action="/logout" method="POST" id="form-logout">
+                <input type="submit" value="Cerrar sesión">
+            </form>
+        </div>
     </header>

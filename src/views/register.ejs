@@ -1,0 +1,29 @@
+<%- include ("partials/head.ejs") %>
+
+<main id="login-container">
+
+    <% if (typeof error !== "undefined") { %>
+        <div class="error-container">
+            <p class="error mensaje"><%= error %></p>
+        </div>
+    <% } %>
+
+    <form action="/api/users/register" method="POST" autocomplete="off" id="register-form">
+
+        <label for="nameUser">Nombre</label>
+        <input type="text" name="name" id="nameUser" required>
+
+        <label for="emailUser">Email</label>
+        <input type="email" name="email" id="emailUser" required>
+
+        <label for="passwordUser">Password</label>
+        <input type="password" name="password" id="passwordUser" required>
+
+        <input type="submit" value="Registrarse">
+
+    </form>
+
+</main>
+
+</body>
+</html>
