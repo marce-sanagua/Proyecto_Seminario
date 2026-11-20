@@ -18,6 +18,11 @@ Aplicación web de un autoservicio de comidas y bebidas, que permite gestionar p
 - JavaScript
 - MySQL
 
+## Entorno de desarrollo
+
+- Sistema operativo: Linux Mint 21.3 MATE.
+- Entorno virtualizado: Oracle VM VirtualBox.
+
 ## Base de datos
 
 `tp25_autoservicio.sql`
