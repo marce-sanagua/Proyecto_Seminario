@@ -1,88 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado productos</title>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css'>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-    <header>
-        <div id="logo-container">
-            <img src="https://img.magnific.com/premium-vector/simple-burger-logo-design_375081-575.jpg?w=740" alt="logo" class="logo">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Principal</a></li>
-                <li><a href="get.html">Consultar</a></li>
-                <li><a href="post.html">Crear</a></li>
-                <li><a href="put.html">Modificar</a></li>
-                <li><a href="delete.html">Eliminar</a></li>
-            </ul>
-        </nav>
-    </header>
+<%- include ("partials/head.ejs") %>
+<%- include ("partials/header.ejs") %>
     
     <main>
         <h1>Consultar producto por id</h1>
-        
+
         
         <form id="getProduct-form">
-            <label for="idProd">ID del producto</label>
-            <input type="number" name="id" id="idProd" required>
+            <label for="idProd">Id del producto</label>
+            <input type="number" name="idProd" id="idProd" required>
 
             <input type="submit" value="Consultar producto">
         </form>
 
+
         <section id="contenedor-productos"></section>
     </main>
 
+
     <script>
-        // CORREGIDO: Buscamos el formulario por su nuevo ID correcto
         let getProductform = document.getElementById("getProduct-form");
         let contenedorProductos = document.getElementById("contenedor-productos");
 
+        
         function mostrarError(string) {
             contenedorProductos.innerHTML = `
                 <p class="mensaje error">${string}</p>
             `;
         }
-        
-        getProductform.addEventListener("submit", async event => {
+
+            getProductform.addEventListener("submit", async event => {
             event.preventDefault();
 
             const idProd = event.target.idProd.value.trim();
 
-           
-
+            
             if (!idProd) {
                 return mostrarError("Ingresa un id valido");
             }
 
             const urlBase = "http://localhost:3000/api/products";
             
+            
             try {
                 const response = await fetch(`${urlBase}/${idProd}`);
                 console.log(response);
 
+                
                 const datos = await response.json();
 
-                if (!response.ok) {
+                if(!response.ok) {
                     return mostrarError(datos.message);
                 }
 
                 const producto = datos.payload;
                 console.log(producto); 
-
+                
                 renderizarProducto(producto); 
 
             } catch (error) {
-                console.error("Error al obtener producto", error);
+                console.error("Error al obtener producto");
+
                 mostrarError("Error al conectarse con el servidor");
             }
         });
 
         function renderizarProducto(producto) {
+        
             let htmlProducto = "";
             htmlProducto += `
             <ul>
@@ -91,6 +74,7 @@
                     <p>Id: ${producto.id} / Nombre: ${producto.name} / <strong>$${producto.price}</strong></p>
                 </li>
             </ul>`;
+            
 
             contenedorProductos.innerHTML = htmlProducto;
         }

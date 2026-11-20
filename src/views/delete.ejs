@@ -1,89 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado productos</title>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css'>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-    <header>
-        <div id="logo-container">
-            <img src="https://img.magnific.com/premium-vector/simple-burger-logo-design_375081-575.jpg?w=740" alt="logo" class="logo">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Principal</a></li>
-                <li><a href="get.html">Consultar</a></li>
-                <li><a href="post.html">Crear</a></li>
-                <li><a href="put.html">Modificar</a></li>
-                <li><a href="delete.html">Eliminar</a></li>
-            </ul>
-        </nav>
-    </header>
+<%- include ("partials/head.ejs") %>
+<%- include ("partials/header.ejs") %>
     
     <main>
         <h1>Consultar producto por id</h1>
-        
-        
-       <form id="deleteProducts-form">
-         <label for="idProd">Id del producto</label>
-         <input type="number" name="idProd" id="idProd" required>
-                  
 
-           
+        <!-- Formulario para obtener producto por id -->
+        <form id="getProduct-form">
+            <label for="idProd">Id del producto</label>
+            <input type="number" name="idProd" id="idProd" required>
 
             <input type="submit" value="Consultar producto">
         </form>
 
+
         <section id="contenedor-productos"></section>
     </main>
 
+
     <script>
-        let deleteProductsform = document.getElementById("deleteProducts-form");
+        let getProductform = document.getElementById("getProduct-form");
         let contenedorProductos = document.getElementById("contenedor-productos");
 
+        // Mostramos mensajes de exito o mensajes de error
         function mostrarMensaje(type, message) {
             contenedorProductos.innerHTML = `
                 <p class="mensaje ${type}">${message}</p>
             `;
         }
 
-       
-        deleteProductsform.addEventListener("submit", async event => {
+        // Manejamos el evento de envio del formulario
+        getProductform.addEventListener("submit", async event => {
             event.preventDefault();
 
+            // En lugar de guardar la informacion de este formulario en un objeto FormData, directamente, al ser solo un id, extraigo este valor
+            // Saltamos el FormData + Object.fromEntries y extraemos de una el id del producto
             const idProd = event.target.idProd.value.trim();
 
-            if (!idProd) {
-                return mostrarMensaje("error","Ingresa un id valido");
+             // Verificamos desde el cliente que estemos introduciendo un id valido
+             if (!idProd) {
+                return mostrarMensaje("error", "Ingresa un id valido");
             }
+
 
             const urlBase = "http://localhost:3000/api/products";
             
+            // Vamos a realizar la solicitud HTTP con la API fetch
             try {
                 const response = await fetch(`${urlBase}/${idProd}`);
                 console.log(response);
 
+                // Procesamos los datos que devuelve el servidor
                 const datos = await response.json();
 
-                if (!response.ok) {
-                    return mostrarMensaje("error",datos,message);
+                if(!response.ok) {
+                    return mostrarMensaje("error", datos.message);
                 }
 
                 const producto = datos.payload;
-                console.log(producto); 
+                console.log(producto); // {id: 3, name: 'la macpollo', image: 'https://www.mostazaweb.com.ar/wp-content/uploads/2025/05/MAYMesa-de-trabajo-2.png', category: 'food', price: '199.00', …}
 
-                renderizarProducto(producto); 
+                // Recibido el producto lo renderizo en la pantalla
+                renderizarProducto(producto); // Aca le mando un objeto, en lugar de un array de objetos como pasa en index.html
+
+
 
             } catch (error) {
-                console.error("Error al obtener producto", error);
-                mostrarError("Error al conectarse con el servidor");
+                console.error("Error al obtener producto");
+
+                // mostrarError(error.message);
             }
         });
 
         function renderizarProducto(producto) {
+        
             let htmlProducto = "";
             htmlProducto += `
             <ul>
@@ -95,27 +84,26 @@
                     <input type="button" id="deleteProduct-button" value="Eliminar producto">
                 </li>
             </ul>`;
+            
 
             contenedorProductos.innerHTML = htmlProducto;
 
-            const deleteProductbutton = document.getElementById("deleteProduct-button");
-            deleteProductbutton.addEventListener("click", event => {
+            const deleteProductButton = document.getElementById("deleteProduct-button");
+
+            deleteProductButton.addEventListener("click", event => {
                 event.stopPropagation();
 
-                const confirmacion= confirm("Queres eliminar este producto?");
+                const confirmacion = confirm("Queres elminar este producto?");
 
-                if(!confirmacion){
+                if(!confirmacion) {
                     alert("Eliminacion cancelada");
-                    
-                } else{
-                   eliminarProducto(producto.id);
+                } else {
+                    eliminarProducto(producto.id)
                 }
-
-
             });
         }
 
-          async function eliminarProducto(id) {
+        async function eliminarProducto(id) {
             try {
                 const urlBase = "http://localhost:3000";
                 const response = await fetch(`${urlBase}/api/products/${id}`, {

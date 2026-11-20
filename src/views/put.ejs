@@ -1,32 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado productos</title>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css'>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-    <header>
-        <div id="logo-container">
-            <img src="https://img.magnific.com/premium-vector/simple-burger-logo-design_375081-575.jpg?w=740" alt="logo" class="logo">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Principal</a></li>
-                <li><a href="get.html">Consultar</a></li>
-                <li><a href="post.html">Crear</a></li>
-                <li><a href="put.html">Modificar</a></li>
-                <li><a href="delete.html">Eliminar</a></li>
-            </ul>
-        </nav>
-    </header>
+<%- include ("partials/head.ejs") %>
+<%- include ("partials/header.ejs") %>
     
-     <main>
+    <main>
         <h1>Consultar producto por id</h1>
 
-      
+       
         <form id="getProduct-form">
             <label for="idProd">Id del producto</label>
             <input type="number" name="idProd" id="idProd" required>
@@ -47,7 +25,7 @@
         let contenedorProductos = document.getElementById("contenedor-productos");
         let contenedorFormulario = document.getElementById("contenedor-formulario");
 
-          // Mostramos mensajes de exito o mensajes de error
+         
           function mostrarMensaje(type, message) {
             contenedorProductos.innerHTML = `
                 <p class="mensaje ${type}">${message}</p>
@@ -68,12 +46,12 @@
 
             const urlBase = "http://localhost:3000/api/products";
             
-            
+           
             try {
                 const response = await fetch(`${urlBase}/${idProd}`);
                 console.log(response);
 
-               
+                
                 const datos = await response.json();
 
                 if(!response.ok) {
@@ -82,11 +60,8 @@
 
                 const producto = datos.payload;
                 console.log(producto); 
-
                 
                 renderizarProducto(producto); 
-
-
 
             } catch (error) {
                 console.error("Error al obtener producto");
@@ -169,9 +144,9 @@
                 const data = Object.fromEntries(formData.entries());
                 console.table(data);
 
-               
-                data.price = Number(data.price); 
-                data.name = data.name.trim(); 
+                // Validamos ligeramente algunos datos del form
+                data.price = Number(data.price); // Convertimos el precio a integer
+                data.name = data.name.trim(); // Limpiamos espacios en el name
 
                 try {
                     const response = await fetch(`${urlBase}/api/products`, {
@@ -191,7 +166,7 @@
 
                         mostrarMensaje("exito", result.message);
                         contenedorFormulario.innerHTML = "";
-                       
+
                     } else {
                         mostrarMensaje("error", result.message);
                         contenedorFormulario.innerHTML = "";

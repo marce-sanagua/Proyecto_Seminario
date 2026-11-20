@@ -4,9 +4,6 @@ import connection from "../database/db.js";
 import {validateId, validateProduct} from "../middlewares/middleware.js";
 
 
-
-
-
 //GET all products
 router.get("/", async (req,res) => {
     try {
