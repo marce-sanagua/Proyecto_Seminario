@@ -44,7 +44,7 @@
                 return mostrarMensaje("error", "Ingresa un id valido");
             }
 
-            const urlBase = "http://localhost:3000/api/products";
+            const urlBase = "/api/products";
             
            
             try {
@@ -139,7 +139,7 @@
             async function actualizarProducto(event) {
                 event.preventDefault();
 
-                const urlBase = "http://localhost:3000";
+                const urlBase = "";
                 const formData = new FormData(event.target);
                 const data = Object.fromEntries(formData.entries());
                 console.table(data);
