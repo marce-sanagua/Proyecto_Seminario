@@ -38,7 +38,7 @@ app.use(session({
 }));
 
 app.get("/", (req, res) => {
-    res.send("Hola mundo");
+    res.redirect("/login");
 });
 
 app.use("/api/products", productRoutes);
