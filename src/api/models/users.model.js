@@ -14,7 +14,13 @@ const createUser = async (name, email, password) => {
     return result.insertId;
 };
 
+const updateUserPassword = async (id, password) => {
+    const sql = "UPDATE users SET password = ? WHERE id = ?";
+    await connection.query(sql, [password, id]);
+};
+
 export {
     getUserByEmail,
-    createUser
+    createUser,
+    updateUserPassword
 };

@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { getUserByEmail } from "../models/users.model.js";
+import { getUserByEmail, updateUserPassword } from "../models/users.model.js";
 
 const loginUser = async (req, res) => {
     try {
@@ -13,11 +13,30 @@ const loginUser = async (req, res) => {
 
         const user = await getUserByEmail(email);
 
-        if (!user || !(await bcrypt.compare(password, user.password))) {
-            return res.status(401).render("login", {
-                error: "Credenciales incorrectas"
-            });
-        }
+        if (!user) {
+    return res.status(401).render("login", {
+        error: "Credenciales incorrectas"
+    });
+}
+
+const esHash = user.password.startsWith("$2");
+
+if (esHash) {
+    if (!(await bcrypt.compare(password, user.password))) {
+        return res.status(401).render("login", {
+            error: "Credenciales incorrectas"
+        });
+    }
+} else {
+    if (password !== user.password) {
+        return res.status(401).render("login", {
+            error: "Credenciales incorrectas"
+        });
+    }
+
+    const nuevoHash = await bcrypt.hash(password, 10);
+    await updateUserPassword(user.id, nuevoHash);
+}
 
         req.session.user = {
             id: user.id,
